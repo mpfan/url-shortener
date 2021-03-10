@@ -1,7 +1,6 @@
 const express = require("express");
 const validUrl = require("valid-url");
 const nanoid = require("nanoid");
-const config = require("config");
 const Url = require("../model/Url");
 
 const router = express.Router();
@@ -10,7 +9,7 @@ const router = express.Router();
 router.post("/shorten", async (req, res) => {
   console.log(req);
   const { longUrl } = req.body;
-  const baseUrl = config.get("baseUrl");
+  const baseUrl = process.env.BASE_URL;
 
   const id = nanoid.nanoid();
 

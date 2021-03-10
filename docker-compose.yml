@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  api:
+    image: node
+    working_dir: /usr/src/app
+    volumes: 
+      - ./api:/usr/src/app
+    environment:
+      - DB_USER=mongo
+      - DB_PASS=mongo
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - PORT=5000
+      - BASE_URL=http://localhost:5000
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+    command: /bin/bash -c './wait-for-it.sh mongo:27017 -- yarn run dev'
+
+  mongo:
+    image: mongo
+    volumes:
+      - url-mongo:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    ports:
+      - 27017:27017
+
+volumes:
+  ? url-mongo

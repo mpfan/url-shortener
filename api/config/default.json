@@ -1,4 +1,0 @@
-{
-  "dbUrl": "mongodb://mongo:mongo@localhost:27017",
-  "baseUrl": "http://localhost:5000"
-}
