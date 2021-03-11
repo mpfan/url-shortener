@@ -1,17 +1,33 @@
 const express = require("express");
 const dbConnection = require("./config/db");
-const apiRuotes = require("./routes/shorten");
-const indexRoutes = require("./routes/index");
+const { graphqlHTTP } = require("express-graphql");
+const schema = require("./schema");
+const resolvers = require("./resolvers");
 
-const app = express();
+(async function () {
+  await dbConnection();
 
-dbConnection();
+  const app = express();
 
-app.use(express.json({ extended: false }));
+  app.get(
+    "/graphql",
+    graphqlHTTP({
+      schema: schema,
+      rootValue: resolvers,
+      graphiql: true,
+    })
+  );
 
-app.use("/api", apiRuotes);
-app.use("/", indexRoutes);
+  app.post(
+    "/graphql",
+    graphqlHTTP({
+      schema: schema,
+      rootValue: resolvers,
+      graphiql: false,
+    })
+  );
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server running on port ${process.env.PORT}`)
-);
+  app.listen(process.env.PORT, () =>
+    console.log(`Server running on port ${process.env.PORT}`)
+  );
+})();
