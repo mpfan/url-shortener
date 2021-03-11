@@ -3,6 +3,7 @@ const dbConnection = require("./config/db");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./schema");
 const resolvers = require("./resolvers");
+const indexRoutes = require("./routes/index");
 
 (async function () {
   await dbConnection();
@@ -26,6 +27,8 @@ const resolvers = require("./resolvers");
       graphiql: false,
     })
   );
+
+  app.use("/", indexRoutes);
 
   app.listen(process.env.PORT, () =>
     console.log(`Server running on port ${process.env.PORT}`)
