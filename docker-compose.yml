@@ -1,10 +1,18 @@
-version: '3'
+version: "3"
 
 services:
+  client:
+    image: node
+    working_dir: /usr/src/app
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - 3000:3000
+    command: /bin/bash -c 'yarn start'
   api:
     image: node
     working_dir: /usr/src/app
-    volumes: 
+    volumes:
       - ./api:/usr/src/app
     environment:
       - DB_USER=mongo
@@ -30,4 +38,4 @@ services:
       - 27017:27017
 
 volumes:
-  ? url-mongo
+  url-mongo:
