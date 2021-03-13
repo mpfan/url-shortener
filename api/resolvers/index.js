@@ -57,7 +57,7 @@ const resolvers = {
 
       return {
         ...currentUrl._doc,
-        createdAt: new Date(url._doc.createdAt).toISOString(),
+        createdAt: new Date(currentUrl._doc.createdAt).toISOString(),
       };
     } catch (error) {
       console.log(error);
