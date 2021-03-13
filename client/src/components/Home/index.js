@@ -9,14 +9,16 @@ import styles from "./home.module.css";
 
 const HomePage = () => {
   const [longUrl, setLongUrl] = useState("");
-  const [error, setError] = useState(false);
-
-  const [createShortUrlMutation, { data }] = useMutation(createShortUrl);
+  const [createShortUrlMutation, { data, error }] = useMutation(createShortUrl);
 
   return (
     <Page>
-      <Alert show={error} variant="danger">
-        Something went try please try again
+      <Alert
+        className={styles.alert}
+        show={error !== undefined}
+        variant="danger"
+      >
+        {error ? error.message : ""}
       </Alert>
       <Form className="d-flex align-items-end justify-content-center">
         <Form.Group
@@ -37,12 +39,10 @@ const HomePage = () => {
             e.preventDefault();
 
             try {
-              createShortUrlMutation({
+              await createShortUrlMutation({
                 variables: { longUrl },
               });
-            } catch (error) {
-              setError(true);
-            }
+            } catch (error) {}
           }}
         >
           Submit
@@ -53,7 +53,7 @@ const HomePage = () => {
           <Card>
             <Card.Title>Your Short Url:</Card.Title>
             <Card.Text>
-              <a href={data.createUrl.shortUrl}>{data.createUrl.shortUrl}</a>
+              <a href={data.createUrl.shortUrl} target="_blank" rel="noopener noreferrer">{data.createUrl.shortUrl}</a>
             </Card.Text>
           </Card>
         </div>
